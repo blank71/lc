@@ -1,8 +1,0 @@
-type token = SPACE | RPAREN | LPAREN | LAMBDA | EOL | DOT | ATOM of string
-val menhir_begin_marker : int
-val xv_main : Syntax.exp
-val xv_exp : Syntax.exp
-val xv_application : Syntax.exp
-val xv_abstraction : Syntax.exp
-val xv_a : Syntax.exp
-val menhir_end_marker : int
