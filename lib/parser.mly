@@ -2,11 +2,11 @@
 open Syntax
 %}
 
-%token LAMBDA
+// %token LAMBDA
 %token <Syntax.var> ATOM
-%token DOT
 %token LPAREN RPAREN
-%token SPACE
+%token LAMBDA
+%token DOT
 %token EOL
 
 
@@ -20,23 +20,18 @@ open Syntax
 
 %%
 
-// 入力を受け取る
 let main := 
-  | SPACE; ~ = main; <>
   | ~ = exp; EOL; <>
 
 let exp :=
   | ~ = abstraction; <>
 
-(* \x. x *)
 let abstraction :=
-  // | LAMBDA; var = ATOM; DOT; ~ = abstraction; { Abst (var, abstraction) }
-  | LAMBDA; var = ATOM; DOT; SPACE; ~ = abstraction; { Abst (var, abstraction) }
+  | LAMBDA; var = ATOM; DOT; ~ = abstraction; { Abst (var, abstraction) }
   | ~ = application; <>
 
 let application :=
-  // | ~ = application; ~ = a; { Appl (application, a) }
-  | ~ = application; SPACE; ~ = a; { Appl (application, a) }
+  | ~ = application; ~ = a; { Appl (application, a) }
   | ~ = a; <>
 
 let a :=
