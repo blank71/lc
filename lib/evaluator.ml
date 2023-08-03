@@ -52,14 +52,14 @@ let rec beta exp = match exp with
   end
 
 let eval exp = 
-  let rec eval1 exp = 
+  let rec eval1 show_beta exp = 
     let next = beta exp in 
     if next = exp then 
       exp
     else
       begin 
-      print_endline ("β " ^ Syntax.to_string exp);
-      eval1 next;
+        if show_beta then print_endline ("β " ^ Syntax.to_string exp);
+      eval1 show_beta next;
       end
-  in eval1 exp;
+  in eval1 true exp;
 
