@@ -16,4 +16,3 @@ rule lex = parse
 | new_line { Parser.EOL }
 | (* ignore space, tab *)
   space+  { lex lexbuf }
-(* | space+ { Parser.SPACE } *)

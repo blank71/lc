@@ -52,12 +52,13 @@ let rec beta1 v exp1 exp2 = match exp1 with
 
 let rec beta exp = match exp with
 | Syntax.Var _ -> exp
-| Syntax.Abst (_, _) -> exp
+| Syntax.Abst (var, e) -> 
+  Syntax.Abst (var, beta e)
 | Syntax.Appl (ae1, ae2) -> 
   begin match ae1 with
-  | Syntax.Var _ -> exp
+  | Syntax.Var _ -> Syntax.Appl (ae1, beta ae2)
   | Syntax.Abst (var, e1) -> beta1 var e1 ae2
-  | Syntax.Appl (_, _) -> Syntax.Appl ((beta ae1) ,ae2)
+  | Syntax.Appl (_, _) -> Syntax.Appl ((beta ae1) ,(beta ae2))
   end
 
 let rec print_lists exps = match exps with
@@ -67,14 +68,22 @@ let rec print_lists exps = match exps with
 let tmp = Parser.main Lexer.lex (Lexing.from_string "(λx.x)\n")
 
 let eval exp = 
-  let rec eval1 show_beta exp = 
+  let rec eval1 exp show_beta = 
     let next = beta exp in 
     if next = exp then 
-      exp
-    else
-      begin 
-        if show_beta then print_endline ("β " ^ Syntax.to_string exp);
-      eval1 show_beta next;
-      end
-  in eval1 true exp;
+      exp 
+    else 
+    begin
+      print_endline ("β " ^ Syntax.to_string exp);
+      eval1 next show_beta
+    end
+  in eval1 exp true
 
+
+(* 
+> (λn.λf.λx. f (n f x))(λf.λx.x)   
+β ((λn.(λf.(λx.(f ((n f) x))))) (λf.(λx.x)))
+β (λf.(λx.(f (((λf.(λx.x)) f) x))))
+β (λf.(λx.(f ((λx.x) x))))
+-> (λf.(λx.(f x)))
+*)

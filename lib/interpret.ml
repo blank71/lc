@@ -12,7 +12,7 @@ let rec parse_eval () =
   try
     let s = parse_lex (Lexing.from_channel stdin) in 
     let p = Evaluator.eval s in
-    (* print_endline ("-> " ^ Evaluator.get_type p); *)
+    (* print_endline ("-> " ^ Syntax.to_type p); *)
     print_endline ("-> " ^ Syntax.to_string p);
   with
   (* Fatal error: exception Lc.Parser.MenhirBasics.Error *)
