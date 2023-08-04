@@ -1,33 +1,42 @@
-let rec get_type exp = match exp with
-  | Syntax.Var var -> "Syntax.Var \"" ^ var  ^ "\""
-  | Syntax.Abst (var, exp)-> "Syntax.Abst (\"" ^ var ^ "\", " ^ get_type exp ^ ")"
-  | Syntax.Appl (exp1, exp2) -> "Syntax.Appl (" ^ get_type exp1 ^ ", " ^ get_type exp2  ^ ")" 
+let rec chech var vars = 
+  if List.exists (fun x -> x = var) vars then
+    chech (var ^ "'") vars
+  else 
+    var
 
-(* let rec alpha var exp = 
-  let prime_var = var ^ "'" in
+let rec alpha1 var exp vars = 
+  let rename_var = chech var vars in 
   match exp with
   | Syntax.Var v -> 
-    if v = var then
-      Syntax.Var prime_var
+    if var = v then
+      Syntax.Var (rename_var)
     else 
-      exp
-  | Syntax.Abst (v, e) ->
-    if v = var then
-      Syntax.Abst (prime_var, alpha var e)
+      Syntax.Var v
+  | Syntax.Abst (v, e) -> 
+    if var = v then
+      Syntax.Abst (rename_var , alpha1 var e vars)
     else 
-      Syntax.Abst (v, alpha var e)
-  | Syntax.Appl (e1, e2) ->
-    Syntax.Appl (alpha var e1, alpha var e2)
-;
-let rec alpha_u exp = match exp with
-  | Syntax.Var var -> Syntax.Var var
-  | Syntax.Abst (v, e) -> Syntax.Abst (v, alpha v e)
-  | Syntax.Appl (e1, e2) -> Syntax.Appl (alpha_u e1, alpha_u e2)
-;
-let is_Abst = function
-  | Syntax.Abst (_, _) -> true
-  | _ -> false
-; *)
+      Syntax.Abst (v , alpha1 var e vars)
+  | Syntax.Appl (e1, e2) -> 
+    Syntax.Appl (alpha1 var e1 vars, alpha1 var e2 vars)
+
+let rec alpha exp vars = 
+  print_endline ("3: " ^ Syntax.to_type exp);
+  match exp with
+| Syntax.Var _ -> (exp, vars)
+| Syntax.Abst (var, e) -> 
+  if List.exists (fun x -> x = var) vars then
+    let new_exp = alpha1 var exp vars in 
+      print_endline ("1: " ^ Syntax.to_string new_exp);
+    (new_exp, vars)
+  else 
+    let new_vars = vars @ [var] in 
+    let (e, vs) = alpha e new_vars in 
+    (Syntax.Abst (var, e), vs)
+| Syntax.Appl (e1, e2) -> 
+  let (exp1, new_vars1) = alpha e1 vars in 
+  let (exp2, new_vars2) = alpha e2 new_vars1 in 
+  (Syntax.Appl (exp1, exp2), new_vars2)
 
 let rec beta1 v exp1 exp2 = match exp1 with
 | Syntax.Var var -> 
@@ -50,6 +59,12 @@ let rec beta exp = match exp with
   | Syntax.Abst (var, e1) -> beta1 var e1 ae2
   | Syntax.Appl (_, _) -> Syntax.Appl ((beta ae1) ,ae2)
   end
+
+let rec print_lists exps = match exps with
+| [] -> ""
+| hd :: tl -> "var: " ^ hd ^ "\n" ^ (print_lists tl)
+
+let tmp = Parser.main Lexer.lex (Lexing.from_string "(λx.x)\n")
 
 let eval exp = 
   let rec eval1 show_beta exp = 
