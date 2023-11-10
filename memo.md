@@ -100,3 +100,5 @@ Fatal error: exception Parser.MenhirBasics.Error
 🤔 \x. \y. x y
 😊 (λx.(λy.(x y)))
 ```
+
+- ベータ短縮

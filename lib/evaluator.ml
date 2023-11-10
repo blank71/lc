@@ -81,7 +81,10 @@ let eval exp =
 
 
 (* 
-> (λn.λf.λx. f (n f x))(λf.λx.x)   
+> (λn.λf.λx. f (n f x)) ((λnp.λfp.λxp. fp (np fp xp)) (λfpp.λxpp.xpp))
+> (λn.λf.λx. f (n f x)) ((λnp.λfp.λxp. f (n f x)) (λf.λx.x))
+> (λn.λf.λx. f (n f x)) (λf.λx.x)
+> (λn.λf.λx. f (n f x))(λa.λb.b) (λc.λd.d)
 β ((λn.(λf.(λx.(f ((n f) x))))) (λf.(λx.x)))
 β (λf.(λx.(f (((λf.(λx.x)) f) x))))
 β (λf.(λx.(f ((λx.x) x))))
