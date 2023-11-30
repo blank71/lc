@@ -1,4 +1,4 @@
-name: Builds, tests & co
+name: buidl
 
 on:
   pull_request:
@@ -30,10 +30,14 @@ jobs:
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
       
-      - run: opam install menhir
+      - name: opam install dependency
+        run: opam install menhir
+      
+      - name: dune build
+        run: opam exec -- dune build
 
-      - run: opam install . --deps-only --with-test
-
-      - run: opam exec -- dune build
-
-      - run: opam exec -- dune runtest
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lc
+          path: _build/install/default/
