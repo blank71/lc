@@ -37,7 +37,7 @@ jobs:
         run: opam exec -- dune build
       
       - name: make tarball
-        run: 
+        run: |
           cp -r _build/install/default . 
           tar -czvf tarball.tar.gz default
           rm default -rf
