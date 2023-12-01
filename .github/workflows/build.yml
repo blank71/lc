@@ -36,10 +36,11 @@ jobs:
       - name: dune build
         run: opam exec -- dune build
       
-      - name: make tarball
+      - name: make tarball 
         run: |
           cp -arL _build/install/default . 
-          tar -czvf tarball.tar.gz default
+          mv default lc
+          tar -czvf tarball.tar.gz lc
           rm default -rf
 
       - name: upload artifact
