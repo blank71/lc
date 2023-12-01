@@ -38,7 +38,7 @@ jobs:
       
       - name: make tarball
         run: |
-          cp -ai _build/install/default . 
+          cp -arL _build/install/default . 
           tar -czvf tarball.tar.gz default
           rm default -rf
 
