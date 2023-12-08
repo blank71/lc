@@ -3,9 +3,6 @@ name: build
 on:
   pull_request:
   push:
-  schedule:
-    # Prime the caches every Monday
-    - cron: 0 1 * * MON
 
 permissions: read-all
 
@@ -16,7 +13,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          - windows-latest
+          - macos-latest
         ocaml-compiler:
           - "5.1"
 

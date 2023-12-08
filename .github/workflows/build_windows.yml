@@ -1,4 +1,4 @@
-name: CI
+name: build
 
 on:
   pull_request:
@@ -12,9 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - ubuntu-latest
+          - windows-latest
         ocaml-compiler:
-          - "5.1"
+          - "4.14"
 
     runs-on: ${{ matrix.os }}
 
@@ -29,10 +29,19 @@ jobs:
       
       - name: opam install dependency
         run: opam install menhir
-
-      - run: opam install . --deps-only --with-test
-
+      
       - name: dune build
         run: opam exec -- dune build
+      
+      - name: make tarball 
+        run: |
+          cp -arL _build/install/default . 
+          mv default lc
+          tar -czvf tarball.tar.gz lc
+          rm default -rf
 
-      - run: opam exec -- dune runtest
+      - name: upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: tarball
+          path: tarball.tar.gz
