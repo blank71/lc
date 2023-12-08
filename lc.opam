@@ -4,7 +4,7 @@ synopsis: "A short synopsis"
 description: "A longer description"
 depends: [
   "ocaml"
-  "dune" {>= "3.8"}
+  "dune" {>= "3.0"}
   "odoc" {with-doc}
 ]
 build: [

@@ -7,14 +7,11 @@ on:
 permissions: read-all
 
 jobs:
-  build:
+  windows:
     strategy:
-      fail-fast: true
       matrix:
-        os:
-          - windows-latest
-        ocaml-compiler:
-          - "4.14"
+        os: [windows-latest]
+        ocaml-compiler: [4.14.1]
 
     runs-on: ${{ matrix.os }}
 
@@ -28,7 +25,7 @@ jobs:
         with:
           opam-repositories: |
             default: https://github.com/ocaml-opam/opam-repository-mingw.git#sunset
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          ocaml-compiler: 4.14
 
       - name: Set-up OCaml on Unix
         uses: ocaml/setup-ocaml@v2
