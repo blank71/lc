@@ -37,7 +37,7 @@ jobs:
       
       - name: make tarball 
         run: |
-          cp -arL _build/install/default . 
+          cp -a -r -L _build/install/default . 
           mv default lc
           tar -czvf tarball.tar.gz lc
           rm default -rf
