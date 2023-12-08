@@ -45,7 +45,8 @@ jobs:
       - name: dune build
         run: opam exec -- dune build --verbose
       
-      - name: make tarball 
+      - name: make tarball
+        shell: bash
         run: |
           cp -a -r -L _build/install/default . 
           mv default lc
