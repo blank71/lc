@@ -24,14 +24,14 @@ jobs:
     
       - name: Set-up OCaml on Windows
         uses: ocaml/setup-ocaml@v2
-        if: matrix.os == 'Windows'
+        if: runner.os == 'Windows'
         with:
           opam-repositories: |
             default: https://github.com/ocaml-opam/opam-repository-mingw.git#sunset
     
       - name: Set-up OCaml on Unix
         uses: ocaml/setup-ocaml@v2
-        if: matrix.os != 'Windows'
+        if: runner.os != 'Windows'
         with:
           opam-repositories: |
             default: https://github.com/ocaml/opam-repository.git
