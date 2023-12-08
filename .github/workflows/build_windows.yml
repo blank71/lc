@@ -21,25 +21,29 @@ jobs:
     steps:
       - name: Checkout tree
         uses: actions/checkout@v4
+        
+      - name: Set opam repository url
+        id: repository
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" == "Windows" ]; then
+            echo "::set-output name=url::https://github.com/ocaml-opam/opam-repository-mingw.git#sunset"
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            echo "::set-output name=url::https://github.com/custom/opam-repository.git#macOS"
+          else
+            echo "::set-output name=url::https://github.com/ocaml/opam-repository.git"
+          fi
     
-      - name: Set-up OCaml on Windows
+      - name: Set-up OCaml with repository ${{ steps.repository.outputs.url }}
         uses: ocaml/setup-ocaml@v2
-        if: runner.os == 'Windows'
         with:
           opam-repositories: |
-            default: https://github.com/ocaml-opam/opam-repository-mingw.git#sunset
-    
-      - name: Set-up OCaml on Unix
-        uses: ocaml/setup-ocaml@v2
-        if: runner.os != 'Windows'
-        with:
-          opam-repositories: |
-            default: https://github.com/ocaml/opam-repository.git
+            default: ${{ steps.repository.outputs.url }}
 
-      - name: Set-up OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v2
-        with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+      # - name: Set-up OCaml ${{ matrix.ocaml-compiler }}
+      #   uses: ocaml/setup-ocaml@v2
+      #   with:
+      #     ocaml-compiler: ${{ matrix.ocaml-compiler }}
       
       - name: opam install dependency
         run: opam install menhir
