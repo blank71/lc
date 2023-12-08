@@ -28,7 +28,8 @@ jobs:
         with:
           opam-repositories: |
             default: https://github.com/ocaml-opam/opam-repository-mingw.git#sunset
-    
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+
       - name: Set-up OCaml on Unix
         uses: ocaml/setup-ocaml@v2
         if: runner.os != 'Windows'
