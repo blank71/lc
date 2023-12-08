@@ -9,7 +9,7 @@ permissions: read-all
 jobs:
   build:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         os:
           - ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
         run: opam install menhir
       
       - name: dune build
-        run: opam exec -- dune build
+        run: opam exec -- dune build --verbose
       
       - name: make tarball 
         run: |

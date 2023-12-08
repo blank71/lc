@@ -21,6 +21,20 @@ jobs:
     steps:
       - name: Checkout tree
         uses: actions/checkout@v4
+    
+      - name: Set-up OCaml on Windows
+        uses: ocaml/setup-ocaml@v2
+        if: matrix.os == 'Windows'
+        with:
+          opam-repositories: |
+            default: https://github.com/ocaml-opam/opam-repository-mingw.git#sunset
+    
+      - name: Set-up OCaml on Unix
+        uses: ocaml/setup-ocaml@v2
+        if: matrix.os != 'Windows'
+        with:
+          opam-repositories: |
+            default: https://github.com/ocaml/opam-repository.git
 
       - name: Set-up OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v2
@@ -31,7 +45,7 @@ jobs:
         run: opam install menhir
       
       - name: dune build
-        run: opam exec -- dune build
+        run: opam exec -- dune build --verbose
       
       - name: make tarball 
         run: |
