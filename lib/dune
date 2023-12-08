@@ -1,8 +1,3 @@
-(library
- (name lc))
-
-(ocamllex
- (modules lexer))
-
-(menhir
- (modules parser))
+(library (name lc))
+(ocamllex (modules lexer))
+(menhir (modules parser))
