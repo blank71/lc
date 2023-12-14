@@ -37,18 +37,17 @@ jobs:
 
       - name: opam install dependency
         run: opam install menhir -y
-      
-      - name: select windows dune file
-        if: runner.os == 'Windows'
-        run: cp -a dune-windows dune 
 
-      - name: select linux dune file
-        if: runner.os != 'Windows'
-        run: cp -a dune-linux dune
+      - name: dune build linux
+        run: |
+          cp -a dune-linux dune
+          opam exec -- dune build --verbose
 
-      - name: dune build
-        run: opam exec -- dune build --verbose
-      
+      - name: dune build windows
+        run: |
+          cp -a dune-windows dune
+          opam exec -- dune build -x windows --verbose          
+
       - name: make tarball 
         run: |
           cp -a -r -L _build/install/default _build/install/default.windows . 
