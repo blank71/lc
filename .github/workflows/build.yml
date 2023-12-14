@@ -51,10 +51,11 @@ jobs:
       
       - name: make tarball 
         run: |
-          cp -a -r -L _build/install/default . 
+          cp -a -r -L _build/install/default _build/install/default.windows . 
           mv default lc
-          tar -czvf tarball.tar.gz lc
-          rm default -rf
+          mv default.windows lc.windows
+          tar -czvf tarball.tar.gz lc lc.windows
+          rm lc lc.windows -rf
 
       - name: upload artifact
         uses: actions/upload-artifact@v3
