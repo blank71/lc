@@ -31,7 +31,7 @@ jobs:
 
       - name: opam install windows cross compiler
         run: | 
-          apt install gcc-mingw-w64-x86-64 -y
+          sudo apt install gcc-mingw-w64-x86-64 -y
           opam repository add windows https://github.com/ocaml-cross/opam-cross-windows.git
           opam install ocaml-windows -y
 
