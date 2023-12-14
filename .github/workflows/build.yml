@@ -16,7 +16,7 @@ jobs:
           # - macos-latest
           # - windows-latest
         ocaml-compiler:
-          - "5.1"
+          - "4.14"
 
     runs-on: ${{ matrix.os }}
 
@@ -28,10 +28,24 @@ jobs:
         uses: ocaml/setup-ocaml@v2
         with:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
-      
+
+      - name: opam install windows cross compiler
+        run: | 
+          apt install gcc-mingw-w64-x86-64 -y
+          opam repository add windows https://github.com/ocaml-cross/opam-cross-windows.git
+          opam install ocaml-windows -y
+
       - name: opam install dependency
-        run: opam install menhir
+        run: opam install menhir -y
       
+      - name: select windows dune file
+        if: runner.os == 'Windows'
+        run: cp -a dune-windows dune 
+
+      - name: select linux dune file
+        if: runner.os != 'Windows'
+        run: cp -a dune-linux dune
+
       - name: dune build
         run: opam exec -- dune build --verbose
       

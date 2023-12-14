@@ -1,0 +1,5 @@
+(executable
+ (public_name lc)
+ (name main)
+ (flags (:standard -cclib -static)) ; need package glibc-staic 
+ (libraries lc))
