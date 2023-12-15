@@ -13,8 +13,6 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-          # - macos-latest
-          # - windows-latest
         ocaml-compiler:
           - "4.14"
 
@@ -48,16 +46,36 @@ jobs:
           cp -a dune-windows dune
           opam exec -- dune build -x windows --verbose          
 
-      - name: make tarball 
-        run: |
-          cp -a -r -L _build/install/default _build/install/default.windows . 
-          mv default lc
-          mv default.windows lc.windows
-          tar -czvf tarball.tar.gz lc lc.windows
-          rm lc lc.windows -rf
+      # - name: make tarball 
+      #   run: |
+      #     cp -a -r -L _build/install/default _build/install/default.windows . 
+      #     mv default lc
+      #     mv default.windows lc.windows
+      #     tar -czvf tarball.tar.gz lc lc.windows
+      #     rm lc lc.windows -rf
 
-      - name: upload artifact
+      - name: make linux tarball 
+        run: |
+          cp -a -r -L _build/install/default . 
+          mv default lc
+          tar -czvf linux.tar.gz lc 
+          rm lc -rf
+
+      - name: make windows tarball 
+        run: |
+          cp -a -r -L _build/install/default.windows . 
+          mv default.windows lc.windows
+          tar -czvf windows.tar.gz lc lc.windows
+          rm lc.windows -rf
+
+      - name: upload linux artifact
         uses: actions/upload-artifact@v3
         with:
-          name: tarball
-          path: tarball.tar.gz
+          name: linux
+          path: linux.tar.gz
+
+      - name: upload windows artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: windows
+          path: windows.tar.gz
