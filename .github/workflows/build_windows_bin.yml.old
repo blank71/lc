@@ -41,26 +41,34 @@ jobs:
           cp -a dune-linux dune
           opam exec -- dune build --verbose
 
-      - name: make linux tarball 
-        run: |
-          cp -a -r -L _build/default/main.exe . 
-          mv main.exe lc
-
-      - name: upload linux artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: lc
-          path: lc          
-
       - name: dune build windows
         run: |
           cp -a dune-windows dune
           opam exec -- dune build -x windows --verbose          
 
+      # - name: make tarball 
+      #   run: |
+      #     cp -a -r -L _build/install/default _build/install/default.windows . 
+      #     mv default lc
+      #     mv default.windows lc.windows
+      #     tar -czvf tarball.tar.gz lc lc.windows
+      #     rm lc lc.windows -rf
+
+      - name: make linux tarball 
+        run: |
+          cp -a -r -L _build/default/main.exe . 
+          mv main.exe lc
+
       - name: make windows tarball 
         run: |
           cp -a -r -L _build/default.windows/main.exe . 
           mv main.exe lc.exe
+
+      - name: upload linux artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lc
+          path: lc
 
       - name: upload windows artifact
         uses: actions/upload-artifact@v3
