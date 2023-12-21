@@ -37,7 +37,8 @@ jobs:
 
       - name: move macOS binary
         run: |
-          cp -a -r -L _build/default/main.exe . 
+          ls -al _build/default
+          cp -a -L _build/default/main.exe . 
           mv main.exe lc
 
       - name: upload linux artifact
