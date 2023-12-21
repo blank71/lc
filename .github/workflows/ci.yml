@@ -7,7 +7,7 @@ on:
 permissions: read-all
 
 jobs:
-  build:
+  CI:
     strategy:
       fail-fast: false
       matrix:
@@ -26,17 +26,16 @@ jobs:
       - name: Set-up OCaml ${{ matrix.ocaml-compiler }}
         uses: ocaml/setup-ocaml@v2
         with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
-
-      - name: select linux dune file
-        run: cp -a dune-linux dune          
+          ocaml-compiler: ${{ matrix.ocaml-compiler }}         
           
       - name: opam install dependency
         run: opam install menhir
 
       - run: opam install . --deps-only --with-test
 
-      - name: dune build
-        run: opam exec -- dune build
+      - name: dune build linux
+        run: |
+          cp -a dune-linux dune
+          opam exec -- dune build --verbose
 
       - run: opam exec -- dune runtest

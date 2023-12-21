@@ -1,32 +1,22 @@
 name: build Linux and Windows binary based on Linux
 
 on:
-  pull_request:
-  push:
+  CI:
+    workflows:
+      - check
+    types: 
+      - completed
+  # pull_request:
+  # push:
 
 permissions: read-all
 
 jobs:
-  build:
-    strategy:
-      fail-fast: true
-      matrix:
-        os:
-          - ubuntu-latest
-        ocaml-compiler:
-          - "4.14"
-
-    runs-on: ${{ matrix.os }}
+  build_Linux_bin:
+    if: ${{ github.event.CI.conclusion == 'success' }}
+    if: ${{ github.event.CI.strategy.matrix.ocaml-compiler }} == "4.14"
 
     steps:
-      - name: Checkout tree
-        uses: actions/checkout@v4
-
-      - name: Set-up OCaml ${{ matrix.ocaml-compiler }}
-        uses: ocaml/setup-ocaml@v2
-        with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
-
       - name: opam install windows cross compiler
         run: | 
           sudo apt install gcc-mingw-w64-x86-64 -y
