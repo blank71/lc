@@ -13,6 +13,7 @@ jobs:
       matrix:
         os:
           - macos-latest
+          - macos-latest-large
         ocaml-compiler:
           - "5.1"
 
