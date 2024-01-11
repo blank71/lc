@@ -1,4 +1,5 @@
-name: build Linux and Windows binary based on Linux
+name: build on Linux
+run-name: build Linux and Windows binary based on Linux
 
 on:
   pull_request:
