@@ -35,7 +35,7 @@ jobs:
         id: existence-check
         run: |
           if docker manifest inspect ${{ steps.metadata.outputs.tag }}; then
-            echo "b=0" >> "$GITHUB_OUTPUT"
+            echo "b=1" >> "$GITHUB_OUTPUT"
           else
             echo "b=1" >> "$GITHUB_OUTPUT"
           fi
