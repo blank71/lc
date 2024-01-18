@@ -5,8 +5,8 @@ on: push
 jobs:
   build-and-push-image:
     strategy:
-      matrix:
-        app: [elasticsearch, toolbox]
+      matrix: 
+        app: [lc-container]
 
     runs-on: ubuntu-latest
 
@@ -29,7 +29,7 @@ jobs:
 
       - name: Extract metadata
         id: metadata
-        run: echo "tag=ghcr.io/ushitora-anqou/ket-${{ matrix.app }}:$(cat ${{ matrix.app }}/TAG)" >> "$GITHUB_OUTPUT"
+        run: echo "tag=ghcr.io/blank71/${{ matrix.app }}:$(cat container/TAG)" >> "$GITHUB_OUTPUT"
 
       - name: Check if the image already exists
         id: existence-check
