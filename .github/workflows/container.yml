@@ -29,13 +29,13 @@ jobs:
 
       - name: Extract metadata
         id: metadata
-        run: echo "tag=ghcr.io/blank71/${{ matrix.app }}:$(cat container/TAG)" >> "$GITHUB_OUTPUT"
+        run: echo "tag=ghcr.io/blank71/${{ matrix.app }}:$(cat ${{ matrix.app }}/TAG)" >> "$GITHUB_OUTPUT"
 
       - name: Check if the image already exists
         id: existence-check
         run: |
           if docker manifest inspect ${{ steps.metadata.outputs.tag }}; then
-            echo "b=1" >> "$GITHUB_OUTPUT"
+            echo "b=0" >> "$GITHUB_OUTPUT"
           else
             echo "b=1" >> "$GITHUB_OUTPUT"
           fi
